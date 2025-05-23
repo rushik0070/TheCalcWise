@@ -1,0 +1,82 @@
+styles/globals.css
+
+:root {
+  --bg: #ffffff;
+  --text-color: #111;
+  --desc-color: #555;
+  --card-bg: #f8f9fa;
+  --card-shadow: rgba(0, 0, 0, 0.1) !important;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-color);
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  --card-shadow: rgba(255, 255, 255, 0.05) !important;
+
+}
+
+body.dark {
+  --bg: #121212;
+  --text-color: #f0f0f0;
+  --desc-color: #bbb;
+  --card-bg: #1e1e1e;
+  --card-shadow: rgba(255, 255, 255, 0.05) !important;
+  background: var(--bg);
+  color: var(--text-color);
+}
+
+body.dark .navbar,
+body.dark .navbar-collapse {
+  background-color: var(--card-bg) !important;
+}
+
+body.dark .nav-link,
+body.dark .navbar-brand {
+  color: var(--text-color) !important;
+}
+body.dark footer {
+  background-color: #111 !important;
+  color: #ddd !important;
+}
+
+body.dark footer a {
+  color: #ccc !important;
+}
+
+body.dark footer a:hover {
+  color: #fff !important;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+p {
+  font-size: 14px;
+  color: var(--desc-color);
+}
+.calculator-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 2px 2px 2px black !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculator-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px black !important;
+  cursor: pointer;
+}
+.card-body{
+  background-color: var(--bg);
+}
+.card-title {
+  color: var(--text-color) !important;
+  
+}
