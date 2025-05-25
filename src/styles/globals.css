@@ -60,6 +60,15 @@ p {
   font-size: 14px;
   color: var(--desc-color);
 }
+strong{
+  color: var(--desc-color);
+
+}
+h6{
+  color: var(--desc-color) !important;
+
+}
+
 .calculator-card {
   background: var(--card-bg);
   border-radius: 12px;
@@ -79,4 +88,84 @@ p {
 .card-title {
   color: var(--text-color) !important;
   
+}
+
+.form-label{
+  color: var(--text-color) !important;
+
+}
+input{
+  background-color: var(--bg) !important; 
+
+}
+span{
+  background-color: var(--bg) !important; 
+
+}
+::placeholder {
+  color: var(--text-color) !important;
+  opacity: 1; /* Firefox */
+}
+.accordion-button,
+.accordion-body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.accordion-button,
+.accordion-body,
+.accordion-item {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Accordion border */
+.accordion-item {
+  border: 1px solid var(--desc-color);
+}
+
+/* Accordion button when collapsed */
+.accordion-button.collapsed {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+/* Remove default focus styles */
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+/* Change the arrow color */
+.accordion-button::after {
+  filter: brightness(0.6);
+}
+
+/* Dark mode specifically */
+body.dark .accordion-button,
+body.dark .accordion-body,
+body.dark .accordion-item {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+body.dark .accordion-button::after {
+  filter: brightness(1.4);
+}
+
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+.card-title {
+  color: var(--text-color);
+}
+
+.card-text {
+  color: var(--desc-color);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--text-color);
 }

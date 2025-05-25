@@ -1,5 +1,5 @@
-'use client';
-import { useState } from 'react';
+import BlogSlider from '@/components/pages/BlogSlider'
+import React, { useState } from 'react'
 import { Doughnut } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -7,45 +7,50 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
-
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function InvestmentCalculator() {
-    const [mode, setMode] = useState('sip'); // 'lumpsum' or 'sip'
-    const [investment, setInvestment] = useState(628500); // monthly for SIP
-    const [rate, setRate] = useState(12); // annual %
-    const [time, setTime] = useState(10); // in years
+const swp = () => {
 
-    const r = rate / 100 / 12; // monthly rate
-    const n = time * 12; // total months
+    const [totalinvestment, SetTotalInvestment] = useState(120000)
+    const [withdrawalpermonth, SetWithdrawalPerMonth] = useState(10000)
+    const [expectedreturn, SetExpectedReturn] = useState(7)
+    const [timeperiod, SetTimePeriod] = useState(1)
 
-    let estimatedReturns = 0;
-    let totalValue = 0;
-    let investedAmount = 0;
+    let total_month = timeperiod * 12
+    let monthly_return_rate = expectedreturn / 12
+    console.log("------------monthly_return_rate------------- %s", monthly_return_rate)
+    let totalWithdrawal = withdrawalpermonth * total_month
+    let balance = totalinvestment
 
-    if (mode === 'lumpsum') {
-        totalValue = investment * Math.pow(1 + rate / 100, time);
-        investedAmount = investment;
-        estimatedReturns = totalValue - investedAmount;
-    } else {
-        totalValue = investment * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
-        investedAmount = investment * n;
-        estimatedReturns = totalValue - investedAmount;
+    for (let i = 1; i <= total_month; i++) {
+        const openingBalance = balance
+        const interest = openingBalance * monthly_return_rate / 100
+        console.log("interest earn", interest)
+        const totalBeforeWithdrawal = openingBalance + interest;
+        console.log("totalBeforeWithdrawal ", totalBeforeWithdrawal)
+        const withdrawal = withdrawalpermonth;
+        balance = totalBeforeWithdrawal - withdrawal;
+        console.log("balance ----------------------- ", balance)
+
+
     }
+    let finalvalue = balance;
 
     const chartData = {
-        labels: ['Invested Amount', 'Est. Returns'],
+        labels: ['Final Value', 'Total Withdrawal', 'Total Investment'],
         datasets: [
             {
-                data: [investedAmount, estimatedReturns],
-                backgroundColor: ['	#498ae3', '	#3e9c35'],
+                data: [balance, totalWithdrawal, totalinvestment],
+                backgroundColor: ['#3e9c35', '	#498ae3', '	#3e9c35'],
                 hoverOffset: 4,
             },
         ],
     };
 
+
     return (
         <div className="container-fluid my-5">
+
             <div className='row mt-5'>
                 <div className="col-md-2 d-none d-md-block">
                     <div className="p-3 bg-light border text-center sticky-top rounded">
@@ -55,159 +60,146 @@ export default function InvestmentCalculator() {
                 </div>
                 <div className='col-md-7'>
                     <div className="calc-container">
+                        <h4 className="fw-bold mb-4">SWP Calculation</h4>
 
-                        <div className='row'>
-                            <div className='col-7'>
-                                <h4 className="fw-bold mb-4">SIP Calculation</h4>
-                                
-                            </div>
-                            <div className='col-5'>
-                                {/* <div> */}
-
-                                    <div className="btn-group border">
-                                        <button
-                                            className={`btn btn-${mode === 'sip' ? 'light' : 'success'}`}
-                                            onClick={() => setMode('lumpsum')}
-                                        >
-                                            Lumpsum
-                                        </button>
-                                        <button
-                                            className={`btn btn-${mode === 'sip' ? 'success' : 'light'}`}
-                                            onClick={() => setMode('sip')}
-                                        >
-                                            SIP
-                                        </button>
-                                    </div>
-                                {/* </div> */}
-                            </div>
-                        </div>
                         <div className="card shadow card-container">
+
 
                             <div className="card-body shadow p-4">
 
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-7">
                                         {/* Investment */}
                                         <div className="mb-3">
                                             <label className="form-label fw-bold">
-                                                {mode === 'sip' ? 'Monthly Investment' : 'Total Investment'}
+                                                Total Investment
                                             </label>
                                             <input
                                                 type="range"
                                                 className="form-range"
-                                                min="100"
+                                                min="10000"
                                                 max="1000000"
                                                 step="500"
-                                                value={investment}
-                                                onChange={(e) => setInvestment(Number(e.target.value))}
+                                                value={totalinvestment}
+                                                onChange={(e) => SetTotalInvestment(Number(e.target.value))}
                                             />
                                             <div className="input-group">
                                                 <span className="input-group-text currency text-success fw-bold">₹</span>
                                                 <input
-                                                type="number"
-                                                className="form-control w-50 fw-bold text-success"
-                                                min="100"
-                                                max="1000000"
-                                                step="500"
-                                                value={investment}
-                                                onChange={(e) => setInvestment(Number(e.target.value))}
-                                            />
+                                                    type="number"
+                                                    className="form-control w-50 fw-bold text-success"
+                                                    min="10000"
+                                                    max="1000000"
+                                                    step="500"
+                                                    value={totalinvestment}
+                                                    onChange={(e) => SetTotalInvestment(Number(e.target.value))}
+                                                />
                                             </div>
-                                            {/* <div className="fw-bold text-success">₹ {investment.toLocaleString()}</div> */}
                                         </div>
 
                                         {/* Return Rate */}
                                         <div className="mb-3">
-                                            <label className="form-label fw-bold">Expected Return Rate (p.a)</label>
-                                            
+                                            <label className="form-label fw-bold">Withdrawal per month</label>
                                             <input
                                                 type="range"
                                                 className="form-range"
-                                                min="1"
-                                                max="50"
-                                                value={rate}
-                                                onChange={(e) => setRate(Number(e.target.value))}
+                                                min="1000"
+                                                step="500"
+                                                max="5000000"
+                                                value={withdrawalpermonth}
+                                                onChange={(e) => SetWithdrawalPerMonth(Number(e.target.value))}
                                             />
                                             <div className="input-group">
-                                                <span className="input-group-text text-success fw-bold">%</span>
+                                                <span className="input-group-text currency text-success fw-bold">₹</span>
                                                 <input
-                                                type="number"
-                                                className="form-control w-50 fw-bold text-success"
-                                                min="1"
-                                                max="50"
-                                                value={rate}
-                                                onChange={(e) => setRate(Number(e.target.value))}
-                                            />
+                                                    type="number"
+                                                    className="form-control w-50 fw-bold text-success"
+                                                    min="1000"
+                                                    max="500"
+                                                    step="5000000"
+                                                    value={withdrawalpermonth}
+                                                    onChange={(e) => SetWithdrawalPerMonth(Number(e.target.value))}
+                                                />
                                             </div>
-                                            {/* <div className="fw-bold text-success">{rate}%</div> */}
+                                            {/* <div className="fw-bold text-success">₹ {withdrawalpermonth.toLocaleString()}</div> */}
                                         </div>
 
                                         {/* Time Period */}
                                         <div className="mb-3">
-                                            <label className="form-label fw-bold">Time Period</label>
+                                            <label className="form-label fw-bold">Expected return rate (p.a)</label>
+                                            <input
+                                                type="range"
+                                                className="form-range"
+                                                min="1"
+                                                max="50"
+                                                value={expectedreturn}
+                                                onChange={(e) => SetExpectedReturn(Number(e.target.value))}
+                                            />
+                                            <div className="input-group">
+                                                <span className="input-group-text text-success fw-bold">%</span>
+                                                <input
+                                                    type="number"
+                                                    className="form-control w-50 fw-bold text-success"
+                                                    min="1"
+                                                    max="50"
+                                                    value={expectedreturn}
+                                                    onChange={(e) => SetExpectedReturn(Number(e.target.value))}
+                                                />
+                                            </div>
+                                            {/* <div className="fw-bold text-success">{expectedreturn} %</div> */}
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <label className="form-label fw-bold">Time period </label>
                                             <input
                                                 type="range"
                                                 className="form-range"
                                                 min="1"
                                                 max="100"
-                                                value={time}
-                                                onChange={(e) => setTime(Number(e.target.value))}
+                                                value={timeperiod}
+                                                onChange={(e) => SetTimePeriod(Number(e.target.value))}
                                             />
                                             <div className="input-group">
-                                                <span className="input-group-text text-success fw-bold">Yr.</span>
+                                                <span className="input-group-text text-success fw-bold">%</span>
                                                 <input
-                                                type="number"
-                                                className="form-control w-50 fw-bold text-success"
-                                                min="1"
-                                                max="100"
-                                                value={time}
-                                                onChange={(e) => setTime(Number(e.target.value))}
-                                            />
+                                                    type="number"
+                                                    className="form-control w-50 fw-bold text-success"
+                                                    min="1"
+                                                    max="100"
+                                                    value={timeperiod}
+                                                    onChange={(e) => SetTimePeriod(Number(e.target.value))}
+                                                />
                                             </div>
-                                            {/* <div className="fw-bold text-success">{time} Yr</div> */}
+                                            {/* <div className="fw-bold text-success">{timeperiod} Yr</div> */}
                                         </div>
                                     </div>
 
-                                    {/* Chart */}
-                                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-
-                                        <div style={{ width: '300px' }}>
-                                            <Doughnut data={chartData} />
+                                    <div className="col-md-5">
+                                        <div className="card card-container">
+                                            <div className='card-body'>
+                                                <div className='row mt-2 text-left'>
+                                                    <div className='col-12'>
+                                                        <strong>Final Value : </strong>
+                                                        <strong className='text-success'>{finalvalue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>
+                                                    </div>
+                                                </div>
+                                                <div className='row mt-3 text-left'>
+                                                    <div className='col-12'>
+                                                        <strong>Total Investment : </strong>
+                                                        <strong className='text-success'>{totalinvestment.toLocaleString()}</strong>
+                                                    </div>
+                                                </div>
+                                                <div className='row mt-3 text-left'>
+                                                    <div className='col-12'>
+                                                        <strong>Total Withdrawal : </strong>
+                                                        <strong className='text-success'>{totalWithdrawal.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>
+                                                    </div>
+                                                </div>
+                                                <div className='mt-3' style={{ width: '300px', height: '300px', }}>
+                                                    <Doughnut data={chartData} />
+                                                </div>
+                                            </div>
                                         </div>
-
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-5'>
-                                        <strong>Invested amount:</strong>
-                                    </div>
-                                    <div className='col-5'>
-                                        <strong className='text-success'>{investedAmount.toLocaleString()}</strong>
-
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-5'>
-
-                                        <strong>Est. returns:</strong>
-                                    </div>
-                                    <div className='col-5'>
-                                        <strong className='text-success'>
-
-                                            {estimatedReturns.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                                        </strong>
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-5'>
-
-                                        <strong>Total value:</strong>
-                                    </div>
-                                    <div className='col-5'>
-                                        <strong className='text-success'>
-
-                                            {totalValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                                        </strong>
                                     </div>
                                 </div>
                             </div>
@@ -247,29 +239,6 @@ export default function InvestmentCalculator() {
                             </p>
                         </div>
                     </div>
-                    {/* <div className="card shadow card-container">
-                    <div className="card-body">
-                        <p>
-                            Suppose you invest ₹1,00,000 as a one-time lumpsum investment in a mutual fund. The NAV (Net Asset Value) at the time of investment is ₹50.
-                        </p>
-                        <p className="fw-medium mb-2">
-                            <strong>Units purchased</strong> = ₹1,00,000 / ₹50<br />
-                            = 2,000 units
-                        </p>
-                        <p className="fw-medium mb-2">
-                            Let’s say after 2 years, the NAV becomes ₹75.
-                        </p>
-                        <p className="fw-medium mb-3">
-                            <strong>Current value</strong> = 2,000 units × ₹75<br />
-                            = ₹1,50,000
-                        </p>
-                        <p>
-                            A lumpsum calculator helps you estimate the future value of your one-time investment based on expected returns. It's useful for long-term investors who want to invest a large amount upfront.
-                        </p>
-                    </div>
-                </div> */}
-
-
                 </div>
                 <div className="row mt-5">
                     <div className="col-md-2 d-none d-md-block">
@@ -350,11 +319,14 @@ export default function InvestmentCalculator() {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
+                <div className='text-center mt-2'>
+                    <h5>Google Ad</h5>
+                </div>
+                {/* <BlogSlider/> */}
             </div>
-
-        </div >
-    );
+        </div>
+    )
 }
+
+export default swp
