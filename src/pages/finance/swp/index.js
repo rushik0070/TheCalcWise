@@ -1,4 +1,4 @@
-import BlogSlider from '@/components/pages/BlogSlider'
+// import BlogSlider from '@/components/pages/BlogSlider'
 import React, { useState } from 'react'
 import { Doughnut } from 'react-chartjs-2';
 import {
@@ -16,32 +16,38 @@ const swp = () => {
     const [expectedreturn, SetExpectedReturn] = useState(7)
     const [timeperiod, SetTimePeriod] = useState(1)
 
-    let total_month = timeperiod * 12
-    let monthly_return_rate = expectedreturn / 12
-    console.log("------------monthly_return_rate------------- %s", monthly_return_rate)
-    let totalWithdrawal = withdrawalpermonth * total_month
-    let balance = totalinvestment
+
+    let total_month = timeperiod * 12;
+    let monthly_return_rate = Math.pow(1 + expectedreturn / 100, 1 / 12) - 1;
+    let balance = totalinvestment;
+    let monthsUntilZero = 0;
 
     for (let i = 1; i <= total_month; i++) {
-        const openingBalance = balance
-        const interest = openingBalance * monthly_return_rate / 100
-        console.log("interest earn", interest)
-        const totalBeforeWithdrawal = openingBalance + interest;
-        console.log("totalBeforeWithdrawal ", totalBeforeWithdrawal)
-        const withdrawal = withdrawalpermonth;
-        balance = totalBeforeWithdrawal - withdrawal;
-        console.log("balance ----------------------- ", balance)
+        const interest = balance * monthly_return_rate;
+        balance += interest;
+        balance -= withdrawalpermonth;
 
-
+        if (balance <= 0) {
+            monthsUntilZero = i;
+            balance = 0;
+            break;
+        }
     }
+    let totalWithdrawal = withdrawalpermonth * (monthsUntilZero || total_month);
     let finalvalue = balance;
+    // let message = monthsUntilZero > 0
+    //     ? `You can withdraw for ${monthsUntilZero} month(s) before your balance becomes zero.`
+    //     : `Your balance will not run out in the given period.`;
+
+    let message = `You can withdraw for ${monthsUntilZero} month(s) before your balance becomes zero.`;
+
 
     const chartData = {
         labels: ['Final Value', 'Total Withdrawal', 'Total Investment'],
         datasets: [
             {
                 data: [balance, totalWithdrawal, totalinvestment],
-                backgroundColor: ['#3e9c35', '	#498ae3', '	#3e9c35'],
+                backgroundColor: ['#FFD700', '	#3e9c35', '	#498ae3'],
                 hoverOffset: 4,
             },
         ],
@@ -179,20 +185,29 @@ const swp = () => {
                                             <div className='card-body'>
                                                 <div className='row mt-2 text-left'>
                                                     <div className='col-12'>
-                                                        <strong>Final Value : </strong>
-                                                        <strong className='text-success'>{finalvalue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>
+                                                        <strong>Final Value: </strong>
+                                                        {finalvalue > 0 ? (
+                                                            <strong className='text-success'>
+                                                                ₹  {finalvalue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                                                            </strong>
+                                                        ) : (
+                                                            <strong className='text-danger'>
+                                                                {message}
+                                                            </strong>
+                                                        )}
                                                     </div>
+
                                                 </div>
                                                 <div className='row mt-3 text-left'>
                                                     <div className='col-12'>
                                                         <strong>Total Investment : </strong>
-                                                        <strong className='text-success'>{totalinvestment.toLocaleString()}</strong>
+                                                        <strong className='text-success'>₹ {totalinvestment.toLocaleString()}</strong>
                                                     </div>
                                                 </div>
                                                 <div className='row mt-3 text-left'>
                                                     <div className='col-12'>
                                                         <strong>Total Withdrawal : </strong>
-                                                        <strong className='text-success'>{totalWithdrawal.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>
+                                                        <strong className='text-success'>₹ {totalWithdrawal.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>
                                                     </div>
                                                 </div>
                                                 <div className='mt-3' style={{ width: '300px', height: '300px', }}>

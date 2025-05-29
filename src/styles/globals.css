@@ -169,3 +169,14 @@ body.dark .accordion-button::after {
 .swiper-button-prev {
   color: var(--text-color);
 }
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 40px;
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}

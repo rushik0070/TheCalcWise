@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './index.module.css';
+// import styles from './index.module.css';
 import Link from 'next/link';
 
 const calculators = [
@@ -57,16 +57,16 @@ const FinancePage = () => {
   return (
     <>
     <h3>Calculators</h3>
-    <div className={styles.wrapper}>
+    <div className="wrapper">
       {calculators.map((calc, index) => (
-        // <Link href={calc.link} key={index} >
+        // <Link href={calc.link} key={index}  style={{}}>
 
         <div className="calculator-card" key={index}>
-          <div className={styles.icon}>{calc.icon}</div>
+          <div className="icon">{calc.icon}</div>
           <h3 className="title">{calc.title}</h3>
           <p className="description">{calc.description}</p>
         </div>
-        // </Link>
+        //  </Link>
       ))}
     </div>
     </>
