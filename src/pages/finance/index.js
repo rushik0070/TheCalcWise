@@ -59,14 +59,13 @@ const FinancePage = () => {
     <h3>Calculators</h3>
     <div className="wrapper">
       {calculators.map((calc, index) => (
-        // <Link href={calc.link} key={index}  style={{}}>
-
         <div className="calculator-card" key={index}>
+          <Link href={calc.link} key={index}  style={{}}>
           <div className="icon">{calc.icon}</div>
           <h3 className="title">{calc.title}</h3>
           <p className="description">{calc.description}</p>
+          </Link>
         </div>
-        //  </Link>
       ))}
     </div>
     </>

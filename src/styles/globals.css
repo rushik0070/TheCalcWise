@@ -73,13 +73,13 @@ h6{
   background: var(--card-bg);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 2px 2px 2px black !important;
+  box-shadow: 2px 2px 2px #9f9f9f !important;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .calculator-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px black !important;
+  box-shadow: 0 8px 20px #939393 !important;
   cursor: pointer;
 }
 .card-body{
@@ -165,6 +165,13 @@ body.dark .accordion-button::after {
   color: var(--desc-color);
 }
 
+
+.calculator-card a{
+  text-decoration: none;
+}
+.calculator-card .title, .calculator-card .description{
+  color: #000;
+}
 .swiper-button-next,
 .swiper-button-prev {
   color: var(--text-color);
