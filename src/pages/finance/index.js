@@ -1,10 +1,11 @@
 import React from 'react';
 // import styles from './index.module.css';
 import Link from 'next/link';
+import lumsum from '@/asset/images/lumpsump.wepb'
 
 const calculators = [
   {
-    icon: '📈',
+    icon: lumsum,
     title: 'SIP',
     description: 'Calculate investment returns with SIP return calculator to determine your maturity amount and returns.',
     link : '/finance/stock-average'

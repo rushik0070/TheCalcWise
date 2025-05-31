@@ -168,9 +168,11 @@ body.dark .accordion-button::after {
 
 .calculator-card a{
   text-decoration: none;
+  color: var(--text-color);
+
 }
 .calculator-card .title, .calculator-card .description{
-  color: #000;
+  color: var(--text-color);
 }
 .swiper-button-next,
 .swiper-button-prev {
